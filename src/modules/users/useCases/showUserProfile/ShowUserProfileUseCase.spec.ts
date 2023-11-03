@@ -37,6 +37,6 @@ describe('Show User Profile', () => {
   it('Should not be able to show the info from a nonexistent user', () => {
     expect(async () => {
       await showUserProfileUseCase.execute('invalid_user_id');
-    }).rejects.toEqual(new ShowUserProfileError());
+    }).rejects.toBeInstanceOf(ShowUserProfileError);
   });
 });
