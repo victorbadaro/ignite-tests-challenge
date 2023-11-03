@@ -2,8 +2,10 @@ import cors from 'cors';
 import express from 'express';
 import 'express-async-errors';
 import 'reflect-metadata';
+import createConnection from './database';
 
-import './database';
+createConnection();
+
 import { router } from './routes';
 import './shared/container';
 import { AppError } from './shared/errors/AppError';
