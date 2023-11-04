@@ -95,4 +95,25 @@ describe('Create Statement Controller', () => {
     expect(response.body).toHaveProperty('message');
     expect(response.body).toEqual({ message: expectedResponse.message });
   });
+
+  it('Should not be able to create any statements with a nonexistent user', async () => {
+    const authenticationResponse = await request(app).post('/api/v1/sessions').send({ email, password });
+    const { token } = authenticationResponse.body;
+
+    await connection.query(`DELETE FROM users WHERE email = '${email}'`);
+
+    const amount = 10;
+    const description = 'second deposit statement';
+    const response = await request(app).post('/api/v1/statements/deposit').send({
+      amount,
+      description
+    }).set({
+      Authorization: `Bearer ${token}`
+    });
+    const expectedResponse = new CreateStatementError.UserNotFound();
+
+    expect(response.status).toBe(expectedResponse.statusCode);
+    expect(response.body).toHaveProperty('message');
+    expect(response.body).toEqual({ message: expectedResponse.message });
+  });
 });
