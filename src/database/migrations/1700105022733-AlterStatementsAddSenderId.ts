@@ -5,7 +5,8 @@ export class AlterStatementsAddSenderId1700105022733 implements MigrationInterfa
     public async up(queryRunner: QueryRunner): Promise<void> {
       await queryRunner.addColumn('statements', new TableColumn({
         name: 'sender_id',
-        type: 'uuid'
+        type: 'uuid',
+        isNullable: true
       }));
 
       await queryRunner.createForeignKey('statements', new TableForeignKey({
